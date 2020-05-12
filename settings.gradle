@@ -1,0 +1,5 @@
+rootProject.name='DynamicFeature'
+include ':app'
+include ':dashboard'
+include ':home'
+include ':notification'
