@@ -4,29 +4,41 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.lcmobile.dashboard.DashboardFragment
-import com.lcmobile.home.HomeFragment
-import com.lcmobile.notification.NotificationsFragment
+import com.lcmobile.dynamicfeature.manager.FragmentDynamicManager
+import com.lcmobile.dynamicfeature.manager.installDashboard
+import com.lcmobile.dynamicfeature.manager.installHome
+import com.lcmobile.dynamicfeature.manager.installNotification
 
 class MainActivity : AppCompatActivity() {
 
     private val navView by lazy { findViewById<BottomNavigationView>(R.id.nav_view) }
+
+    private val dynamicManager: FragmentDynamicManager
+        get() = FragmentDynamicManager(
+            this,
+            supportFragmentManager
+        )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         navView.setOnNavigationItemSelectedListener {
-            val fragment = when (it.itemId) {
-                R.id.navigation_notifications -> NotificationsFragment()
-                R.id.navigation_dashboard -> DashboardFragment()
-                else -> HomeFragment()
+            when (it.itemId) {
+                R.id.navigation_notifications -> {
+                    dynamicManager.installNotification(::inflate)
+                }
+                R.id.navigation_dashboard -> {
+                    dynamicManager.installDashboard(::inflate)
+                }
+                else -> {
+                    dynamicManager.installHome(::inflate)
+                }
             }
-            inflate(fragment)
-            true
+            false
         }
 
-        navView.selectedItemId = R.id.navigation_home
+        navView.selectedItemId = -1
     }
 
     private fun inflate(fragment: Fragment) {

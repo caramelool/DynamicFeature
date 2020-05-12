@@ -35,6 +35,7 @@ android {
         jvmTarget = "1.8"
     }
 
+    dynamicFeatures = [":home_dynamic", ":dashboard_dynamic", ":notification_dynamic"]
 }
 
 dependencies {
@@ -44,16 +45,17 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.2.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation 'androidx.vectordrawable:vectordrawable:1.0.1'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0'
     implementation 'androidx.navigation:navigation-fragment:2.0.0'
     implementation 'androidx.navigation:navigation-ui:2.0.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.0.0'
     implementation 'androidx.navigation:navigation-ui-ktx:2.0.0'
-    testImplementation 'junit:junit:4.12'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    implementation 'com.google.android.play:core:1.7.2'
+
+    testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation project(path: ':dashboard')
-    implementation project(path: ':notification')
-    implementation project(path: ':home')
 }
