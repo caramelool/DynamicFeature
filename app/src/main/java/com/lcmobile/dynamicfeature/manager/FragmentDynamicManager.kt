@@ -8,12 +8,12 @@ class FragmentDynamicManager(
     private val context: Context,
     private val fragmentManager: FragmentManager
 ) : AbstractDynamicManager(context) {
-    fun install(moduleName: String, className: String, onComplete: (Fragment) -> Unit) {
+    fun install(moduleName: String, fragmentClassName: String, onComplete: (Fragment) -> Unit) {
         super.install(moduleName) {
             when(it) {
                 is DynamicResult.Installed -> {
                     val fragment = fragmentManager.fragmentFactory
-                        .instantiate(context.classLoader, className)
+                        .instantiate(context.classLoader, fragmentClassName)
                     onComplete.invoke(fragment)
                 }
             }

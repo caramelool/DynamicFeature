@@ -1,9 +1,9 @@
 package com.lcmobile.dynamicfeature
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lcmobile.dynamicfeature.manager.FragmentDynamicManager
 import com.lcmobile.dynamicfeature.manager.installDashboard
 import com.lcmobile.dynamicfeature.manager.installHome
@@ -31,14 +31,13 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_dashboard -> {
                     dynamicManager.installDashboard(::inflate)
                 }
-                else -> {
+                R.id.navigation_home -> {
                     dynamicManager.installHome(::inflate)
                 }
             }
-            false
+            true
         }
-
-        navView.selectedItemId = -1
+        navView.selectedItemId = R.id.navigation_home
     }
 
     private fun inflate(fragment: Fragment) {
