@@ -20,5 +20,5 @@ android {
 
 dependencies {
     implementation project(':app')
-    api project(path: ':dashboard')
+    implementation project(path: ':dashboard')
 }
