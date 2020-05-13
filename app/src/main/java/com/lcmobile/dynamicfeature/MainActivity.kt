@@ -13,11 +13,12 @@ class MainActivity : AppCompatActivity() {
 
     private val navView by lazy { findViewById<BottomNavigationView>(R.id.nav_view) }
 
-    private val dynamicManager: FragmentDynamicManager
-        get() = FragmentDynamicManager(
+    private val dynamicManager by lazy {
+        FragmentDynamicManager(
             this,
             supportFragmentManager
         )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +41,11 @@ class MainActivity : AppCompatActivity() {
         navView.selectedItemId = R.id.navigation_home
     }
 
-    private fun inflate(fragment: Fragment) {
+    private fun inflate(fragment: Fragment?) {
+        if (fragment == null) {
+            //Do message error
+            return
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_fragment, fragment)
             .commit()

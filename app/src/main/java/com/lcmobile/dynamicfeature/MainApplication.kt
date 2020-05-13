@@ -19,3 +19,12 @@ class MainApplication : SplitCompatApplication() {
         }
     }
 }
+
+// SplitCompatApplication can be changed for SplitCompat.install(this)
+//class MainApplication : Application() {
+//
+//    override fun attachBaseContext(base: Context?) {
+//        super.attachBaseContext(base)
+//        SplitCompat.install(this)
+//    }
+//}

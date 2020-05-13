@@ -4,6 +4,7 @@ import android.content.Context
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 
 abstract class AbstractDynamicManager(context: Context) {
 
@@ -32,7 +33,7 @@ abstract class AbstractDynamicManager(context: Context) {
                 onStatusChange.invoke(result)
             }
             .addOnFailureListener {
-                val result = DynamicResult.Other(0)
+                val result = DynamicResult.Other(SplitInstallSessionStatus.FAILED)
                 onStatusChange.invoke(result)
             }
 // More Status
@@ -49,7 +50,7 @@ abstract class AbstractDynamicManager(context: Context) {
 //                    }
 //                    else -> {
 //                        Timber.d("$moduleName OTHER $status")
-//                        DynamicResult.Other(status ?: 0)
+//                        DynamicResult.Other(status ?: SplitInstallSessionStatus.FAILED)
 //                    }
 //                }
 //                onStatusChange.invoke(result)

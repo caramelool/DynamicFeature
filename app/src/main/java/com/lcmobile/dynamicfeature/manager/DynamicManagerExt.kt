@@ -3,7 +3,7 @@ package com.lcmobile.dynamicfeature.manager
 import androidx.fragment.app.Fragment
 
 fun FragmentDynamicManager.installHome(
-    onComplete: (Fragment) -> Unit
+    onComplete: (Fragment?) -> Unit
 ) {
     val moduleName = "home_dynamic"
     val className = "com.lcmobile.home.HomeFragment"
@@ -11,7 +11,7 @@ fun FragmentDynamicManager.installHome(
 }
 
 fun FragmentDynamicManager.installDashboard(
-    onComplete: (Fragment) -> Unit
+    onComplete: (Fragment?) -> Unit
 ) {
     val moduleName = "dashboard_dynamic"
     val className = "com.lcmobile.dashboard.DashboardFragment"
@@ -19,7 +19,7 @@ fun FragmentDynamicManager.installDashboard(
 }
 
 fun FragmentDynamicManager.installNotification(
-    onComplete: (Fragment) -> Unit
+    onComplete: (Fragment?) -> Unit
 ) {
     val moduleName = "notification_dynamic"
     val className = "com.lcmobile.notification.NotificationsFragment"
