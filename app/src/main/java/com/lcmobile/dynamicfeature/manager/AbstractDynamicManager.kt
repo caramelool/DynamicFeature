@@ -5,6 +5,7 @@ import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import timber.log.Timber
 
 abstract class AbstractDynamicManager(context: Context) {
 
@@ -13,11 +14,14 @@ abstract class AbstractDynamicManager(context: Context) {
     }
 
     protected open fun install(moduleName: String, onStatusChange: (DynamicResult) -> Unit) {
-        if (manager.installedModules.contains(moduleName)) {
-            val result = DynamicResult.Installed
-            onStatusChange.invoke(result)
-            return
-        }
+// Validate if contains the module installed
+//        if (manager.installedModules.contains(moduleName)) {
+//            installed(moduleName, onStatusChange)
+//            return
+//        }
+
+        Timber.d("Downloading $moduleName")
+        onStatusChange.invoke(DynamicResult.Downloading)
 
         val request = SplitInstallRequest.newBuilder()
             .addModule(moduleName)
@@ -25,17 +29,19 @@ abstract class AbstractDynamicManager(context: Context) {
 
         manager.startInstall(request)
             .addOnCompleteListener {
-                val result = DynamicResult.Installed
-                onStatusChange.invoke(result)
+                installed(moduleName, onStatusChange)
             }
             .addOnSuccessListener {
-                val result = DynamicResult.Download
+                Timber.d("Loading $moduleName")
+                val result = DynamicResult.Loading
                 onStatusChange.invoke(result)
             }
             .addOnFailureListener {
+                Timber.d("Error Loading $moduleName")
                 val result = DynamicResult.Other(SplitInstallSessionStatus.FAILED)
                 onStatusChange.invoke(result)
             }
+    }
 // More Status
 //        manager.registerListener(object : SplitInstallStateUpdatedListener {
 //            override fun onStateUpdate(state: SplitInstallSessionState?) {
@@ -58,5 +64,9 @@ abstract class AbstractDynamicManager(context: Context) {
 //            }
 //        })
 
+    private fun installed(moduleName: String, onStatusChange: (DynamicResult) -> Unit) {
+        Timber.d("Module $moduleName installed")
+        val result = DynamicResult.Installed
+        onStatusChange.invoke(result)
     }
 }
