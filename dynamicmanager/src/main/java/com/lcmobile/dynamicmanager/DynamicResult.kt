@@ -1,4 +1,4 @@
-package com.lcmobile.dynamicfeature.manager
+package com.lcmobile.dynamicmanager
 
 sealed class DynamicResult {
     object Downloading : DynamicResult()

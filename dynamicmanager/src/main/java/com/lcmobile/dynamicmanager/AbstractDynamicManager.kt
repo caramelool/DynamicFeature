@@ -1,4 +1,4 @@
-package com.lcmobile.dynamicfeature.manager
+package com.lcmobile.dynamicmanager
 
 import android.content.Context
 import com.google.android.play.core.splitinstall.SplitInstallManager
@@ -14,11 +14,10 @@ abstract class AbstractDynamicManager(context: Context) {
     }
 
     protected open fun install(moduleName: String, onStatusChange: (DynamicResult) -> Unit) {
-// Validate if contains the module installed
-//        if (manager.installedModules.contains(moduleName)) {
-//            installed(moduleName, onStatusChange)
-//            return
-//        }
+        if (manager.installedModules.contains(moduleName)) {
+            installed(moduleName, onStatusChange)
+            return
+        }
 
         Timber.d("Downloading $moduleName")
         onStatusChange.invoke(DynamicResult.Downloading)

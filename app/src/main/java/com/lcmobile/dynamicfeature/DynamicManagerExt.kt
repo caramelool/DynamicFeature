@@ -1,6 +1,7 @@
-package com.lcmobile.dynamicfeature.manager
+package com.lcmobile.dynamicfeature
 
 import androidx.fragment.app.Fragment
+import com.lcmobile.dynamicmanager.FragmentDynamicManager
 
 fun FragmentDynamicManager.installHome(
     onComplete: (Fragment?) -> Unit

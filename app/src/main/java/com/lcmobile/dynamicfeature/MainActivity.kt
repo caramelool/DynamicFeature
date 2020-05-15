@@ -4,10 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.lcmobile.dynamicfeature.manager.FragmentDynamicManager
-import com.lcmobile.dynamicfeature.manager.installDashboard
-import com.lcmobile.dynamicfeature.manager.installHome
-import com.lcmobile.dynamicfeature.manager.installNotification
+import com.lcmobile.dynamicmanager.FragmentDynamicManager
 
 class MainActivity : AppCompatActivity() {
 
