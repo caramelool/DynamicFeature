@@ -22,7 +22,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     val dataView: LiveData<DataView> = _dataView
 
     fun openDetail(listener: (Intent?) -> Unit) {
-        activityDynamicManager.install("detail_dynamic", "dynamic://detail", listener)
+        activityDynamicManager.install("jajaja", "dynamic://detail", listener)
     }
 }
 

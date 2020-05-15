@@ -27,16 +27,11 @@ abstract class AbstractDynamicManager(context: Context) {
             .build()
 
         manager.startInstall(request)
-            .addOnCompleteListener {
+            .addOnSuccessListener {
                 installed(moduleName, onStatusChange)
             }
-            .addOnSuccessListener {
-                Timber.d("Loading $moduleName")
-                val result = DynamicResult.Loading
-                onStatusChange.invoke(result)
-            }
             .addOnFailureListener {
-                Timber.d("Error Loading $moduleName")
+                Timber.d("Error Module $moduleName")
                 val result = DynamicResult.Other(SplitInstallSessionStatus.FAILED)
                 onStatusChange.invoke(result)
             }
