@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.lcmobile.dynamicmanager.DynamicData
+import com.lcmobile.dynamicmanager.DynamicDataProvider
 
 class DashboardFragment : Fragment() {
 
@@ -37,7 +39,11 @@ class DashboardFragment : Fragment() {
 
         buttonView.setOnClickListener {
             dashboardViewModel.openDetail { intent ->
-                intent?.let(::startActivity)
+                intent
+                    ?.putExtra("dynamic", Bundle().apply {
+                        putParcelable(DynamicData.KEY, DynamicData("Test", 99))
+                    })
+                    ?.let(::startActivity)
             }
         }
     }

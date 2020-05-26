@@ -2,15 +2,12 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     package="com.lcmobile.dashboard_dynamic">
 
-    <dist:module
-        dist:instant="false"
-        dist:title="@string/title_dashboard_dynamic">
+    <dist:module dist:title="@string/title_dashboard_dynamic">
         <dist:delivery>
             <dist:on-demand />
         </dist:delivery>
         <dist:fusing dist:include="true" />
     </dist:module>
 
-    <application android:hasCode="false" />
 </manifest>
 

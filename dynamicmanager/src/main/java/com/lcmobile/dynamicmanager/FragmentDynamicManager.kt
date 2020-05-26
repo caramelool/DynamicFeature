@@ -13,12 +13,12 @@ class FragmentDynamicManager(
     fun install(moduleName: String, fragmentClassName: String, onComplete: (Fragment?) -> Unit) {
         super.install(moduleName) {
             when (it) {
-                is DynamicResult.Installed -> {
+                is DynamicStatus.Installed -> {
                     val fragment = fragmentManager.fragmentFactory
                         .instantiate(context.classLoader, fragmentClassName)
                     onComplete.invoke(fragment)
                 }
-                is DynamicResult.Other -> {
+                is DynamicStatus.Other -> {
                     if (it.status == SplitInstallSessionStatus.FAILED) {
                         onComplete.invoke(null)
                     }

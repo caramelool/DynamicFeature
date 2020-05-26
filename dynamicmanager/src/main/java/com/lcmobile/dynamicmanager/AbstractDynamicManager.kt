@@ -1,66 +1,64 @@
 package com.lcmobile.dynamicmanager
 
 import android.content.Context
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
-import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.android.play.core.splitinstall.*
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import com.google.android.play.core.splitinstall.testing.FakeSplitInstallManagerFactory
 import timber.log.Timber
+
+typealias DynamicStatusChangeListener = (DynamicStatus) -> Unit
 
 abstract class AbstractDynamicManager(context: Context) {
 
-    private val manager: SplitInstallManager by lazy {
-        SplitInstallManagerFactory.create(context)
+    private var onStatusChange: DynamicStatusChangeListener? = null
+
+    private val listener = SplitInstallStateUpdatedListener { state ->
+        val result = when (val status = state?.status()) {
+            SplitInstallSessionStatus.DOWNLOADING -> {
+                DynamicStatus.Downloading
+            }
+            SplitInstallSessionStatus.INSTALLED -> {
+                DynamicStatus.Installed
+            }
+            SplitInstallSessionStatus.FAILED -> {
+                DynamicStatus.Failed
+            }
+            else -> {
+                DynamicStatus.Other(status ?: SplitInstallSessionStatus.FAILED)
+            }
+        }
+        Timber.d("AbstractDynamicManager status $result")
+        onStatusChange?.invoke(result)
     }
 
-    protected open fun install(moduleName: String, onStatusChange: (DynamicResult) -> Unit) {
+    private val manager: SplitInstallManager by lazy {
+        if (BuildConfig.DEBUG) {
+            FakeSplitInstallManagerFactory.create(
+                context,
+                context.getExternalFilesDir("local_testing")
+            ).apply {
+//                setShouldNetworkError(true)
+            }
+        } else {
+            SplitInstallManagerFactory.create(context)
+        }.apply {
+            registerListener(listener)
+        }
+    }
+
+    protected open fun install(moduleName: String, onStatusChange: DynamicStatusChangeListener) {
+        this.onStatusChange = onStatusChange
         if (manager.installedModules.contains(moduleName)) {
-            installed(moduleName, onStatusChange)
+            Timber.d("Module $moduleName installed")
+            val result = DynamicStatus.Installed
+            onStatusChange.invoke(result)
             return
         }
-
-        Timber.d("Downloading $moduleName")
-        onStatusChange.invoke(DynamicResult.Downloading)
 
         val request = SplitInstallRequest.newBuilder()
             .addModule(moduleName)
             .build()
 
         manager.startInstall(request)
-            .addOnSuccessListener {
-                installed(moduleName, onStatusChange)
-            }
-            .addOnFailureListener {
-                Timber.d("Error Module $moduleName")
-                val result = DynamicResult.Other(SplitInstallSessionStatus.FAILED)
-                onStatusChange.invoke(result)
-            }
-    }
-// More Status
-//        manager.registerListener(object : SplitInstallStateUpdatedListener {
-//            override fun onStateUpdate(state: SplitInstallSessionState?) {
-//                val result = when (val status = state?.status()) {
-//                    SplitInstallSessionStatus.DOWNLOADING -> {
-//                        Timber.d("$moduleName DOWNLOADING")
-//                        DynamicResult.Download
-//                    }
-//                    SplitInstallSessionStatus.INSTALLED -> {
-//                        Timber.d("$moduleName INSTALLED")
-//                        DynamicResult.Installed
-//                    }
-//                    else -> {
-//                        Timber.d("$moduleName OTHER $status")
-//                        DynamicResult.Other(status ?: SplitInstallSessionStatus.FAILED)
-//                    }
-//                }
-//                onStatusChange.invoke(result)
-//                manager.unregisterListener(this)
-//            }
-//        })
-
-    private fun installed(moduleName: String, onStatusChange: (DynamicResult) -> Unit) {
-        Timber.d("Module $moduleName installed")
-        val result = DynamicResult.Installed
-        onStatusChange.invoke(result)
     }
 }
