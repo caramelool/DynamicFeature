@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_home_dynamic">Home On Demand</string>
+    <string name="title_dashboard_dynamic">Dashboard On Demand</string>
+    <string name="title_notification_dynamic">Notification On Demand</string>
+    <string name="title_detail_dynamic">Detail On Demand</string>
 </resources>

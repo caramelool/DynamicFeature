@@ -1,13 +1,32 @@
 package com.lcmobile.dashboard
 
+import android.app.Application
+import android.content.Intent
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.lcmobile.dynamicmanager.ActivityDynamicManager
 
-class DashboardViewModel : ViewModel() {
+class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is dashboard Fragment"
+    private val activityDynamicManager by lazy {
+        ActivityDynamicManager(application)
     }
-    val text: LiveData<String> = _text
+
+    private val _dataView = MutableLiveData<DataView>().apply {
+        value = DataView(
+            "This is dashboard Fragment",
+            "Open Detail"
+        )
+    }
+    val dataView: LiveData<DataView> = _dataView
+
+    fun openDetail(listener: (Intent?) -> Unit) {
+        activityDynamicManager.install("detail_dynamic", "dynamic://detail", listener)
+    }
 }
+
+data class DataView(
+    val text: String,
+    val button: String
+)
